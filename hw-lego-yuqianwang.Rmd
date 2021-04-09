@@ -37,3 +37,54 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 #I am really exciting for the new journey
 ```
 
+#start using the tidyverse package
+#install dsbox
+```{r}
+remotes::install_github("rstudio-education/dsbox")
+```
+```{r}
+remotes::install_github("rstudio-education/dsbox")
+
+```
+
+
+
+```{r}
+library(tidyverse)
+```
+```{r}
+library(dsbox)
+```
+#Exercise1: What are the three most common first names of purchasers?
+```{r}
+library(dplyr)
+lego_sales%>%
+  count(first_name,sort=TRUE)%>%
+  top_n(3)
+```
+
+#Answer: In this sample, the first three common names of purchasers are:Jackson,Jacob,Joseph
+
+
+#Exercise 2:What are the three most common themes of Lego sets purchased?
+
+```{r}
+Most_common_them<-lego_sales%>%
+  count(theme,sort=TRUE)%>%
+  top_n(3)
+
+Most_common_them
+```
+#Answer: the three most common themes of Lego sets purchased are: Star Wars, Nexo Knights, Gear
+
+#Exercise 3:Among the most common theme of Lego sets purchased, what is the most common subtheme?
+```{r}
+lego_sales%>%
+  filter(theme=="Star Wars")%>%
+  count(subtheme,sort=TRUE)
+```
+#Answer: Among the most common theme of Lego sets purchased, the most common subtheme are: The Force Awakens
+```{r}
+
+```
+
