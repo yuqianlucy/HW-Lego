@@ -84,7 +84,139 @@ lego_sales%>%
   count(subtheme,sort=TRUE)
 ```
 #Answer: Among the most common theme of Lego sets purchased, the most common subtheme are: The Force Awakens
+
+
+#Exercise 4: Create a new variable called age_group and group the ages into the following categories: “18 and under”, “19 - 25”, “26 - 35”, “36 - 50”, “51 and over”.
 ```{r}
 
+lego_sales<-lego_sales%>%
+  mutate(age_group = case_when(
+      age<=18 ~ "18 and under",
+      age>=19 & age<=25 ~"19-25",
+      age>=26&age<=35  ~"26-35",
+      age>=36&age<=50  ~"36-50",
+      age>=51~ "51 and over"
+                        ))
+
 ```
+
+# Which age group has purchased the highest number of Lego sets.
+
+```{r}
+lego_sales%>%
+  group_by(age_group)%>%
+  summarise(
+    total_number=sum(quantity)
+  )%>%
+  arrange(desc(total_number))
+```
+
+# The age group that purchaes highest number of Lego set are the group of: 36-50
+
+
+#Exercise 6: Which age group has spent the most money on Legos?
+
+```{r}
+lego_sales%>%
+  mutate(
+    total_spent=us_price*quantity
+  )%>%
+  group_by(age_group)%>%
+  summarise(
+    total_money=sum(total_spent)
+  )%>%
+  arrange(desc(total_money))
+```
+
+# Answer: the age group that has spent the most money on Legos are the group: 36-50
+
+#Exercise 7:Which Lego theme has made the most money for Lego?
+
+```{r}
+lego_sales%>%
+  mutate(
+    total_price=quantity*us_price
+  )%>%
+  group_by(theme)%>%
+  summarise(
+    total_gain=sum(total_price)
+  )%>%
+  arrange(desc(total_gain))
+```
+
+
+#Answer:The Lego theme has made the most money for Lego is the theme: Star War
+
+
+# Exercise 8 Which area code has spent the most money on Legos? In the US the area code is the first 3 digits of a phone number.
+
+
+```{r}
+library(stringr)
+
+
+
+lego_sales%>%
+  mutate(
+    total_amounts=quantiy*us_price
+    )%>%
+  group_by(phone_number)%>%
+  summarise(
+    total_moneys=sum(total_amounts)
+)%>%
+  arrange(desc(total_moneys))
+```
+
+
+
+
+
+
+
+
+
+
+
+# Exercise 9 Come up with a question you want to answer using these data, and write it down. Then, create a data visualization that answers the question, and explain how your visualization answers the question.
+
+# which two age group spend most money on bying the lego set of theme star war
+
+```{r}
+head(lego_sales)
+```
+
+
+```{r}
+lego_sales%>%
+  filter(theme=="Star Wars")%>%
+  mutate(
+    total_prices=quantity*us_price,
+    total_sum=sum(total_prices)
+  )%>%
+  group_by(age_group)%>%
+  summarise(
+    total_sum=sum(total_prices)
+  )%>%
+  arrange(desc(total_sum))
+  
+```
+
+
+```{r}
+total_prices=lego_sales$quantity*lego_sales$us_price
+total_sum=sum(total_prices)
+
+ggplot(lego_sales, aes(factor(age_group), total_sum, fill = age_group)) + 
+
+  geom_bar(stat="identity")+ 
+  scale_fill_brewer(palette = "Set1")
+```
+
+
+
+
+
+
+
+
 
